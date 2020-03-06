@@ -15,7 +15,7 @@ module.exports = merge(common, {
   plugins: [
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: path.resolve(__dirname, "src/index.html")
+      template: path.resolve(__dirname, "public/index.html")
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new CleanWebpackPlugin()

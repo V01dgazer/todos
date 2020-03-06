@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
     "build": "webpack -p --config webpack.prod.js",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.12.0",
