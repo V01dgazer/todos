@@ -25,11 +25,11 @@ const TodoInput: React.FC<Props> = props => {
   };
 
   const onInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter" || !value.length) return;
+    if (e.key !== "Enter" || !value.trim().length) return;
 
     addTodo({
       id: uuid(),
-      description: value,
+      description: value.trim(),
       completed: false,
       order: Object.keys(todos).length
     });

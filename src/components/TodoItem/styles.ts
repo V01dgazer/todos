@@ -43,8 +43,7 @@ export const CheckBox = styled.div`
   content: "";
   position: absolute;
   left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 15px;
   display: block;
   width: 32px;
   height: 32px;
@@ -91,6 +90,7 @@ interface Props {
 export const Description = styled.label`
   display: block;
   word-break: break-all;
+  white-space: pre-wrap;
   transition: all 0.4s;
 
   ${(props: Props) =>
@@ -109,8 +109,7 @@ export const Toggle = styled.input`
   width: 38px;
   position: absolute;
   z-index: 5;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 15px;
   left: 5px;
   border: none;
   outline: none;
@@ -131,7 +130,7 @@ const EditAppear = keyframes`
   }
 `;
 
-export const EditInput = styled.input`
+export const EditArea = styled.textarea`
   z-index: 10;
   position: absolute;
   top: 0;
@@ -145,4 +144,24 @@ export const EditInput = styled.input`
   font-size: 24px;
   line-height: 1.4em;
   animation: ${EditAppear} 0.2s;
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #555;
+  }
+  resize: none;
+  :focus {
+    outline: none;
+  }
 `;

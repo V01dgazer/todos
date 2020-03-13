@@ -16,7 +16,7 @@ import {
   CheckBox,
   Toggle,
   Icon,
-  EditInput,
+  EditArea,
   EditIcon,
   ButtonsWrapper,
   DeleteIcon,
@@ -58,14 +58,18 @@ const TodoItem = (props: Props) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [todo.description]);
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTodoValue(e.target.value);
   };
 
-  const onSubmit = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    await startEditTodo(todo.id, todoValue);
-    setInEdit(false);
+  const onSubmit = async (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!e || (e.keyCode === 13 && !e.shiftKey)) {
+      const value = todoValue.trim();
+      await startEditTodo(todo.id, value);
+
+      setTodoValue(value);
+      setInEdit(false);
+    }
   };
 
   const exit = () => {
@@ -99,12 +103,14 @@ const TodoItem = (props: Props) => {
   const renderItem = () => {
     return inEdit ? (
       <OutsideClick func={exit}>
-        <form onSubmit={onSubmit}>
-          <Description completed={todo.completed}>
-            <span>{todo.description}</span>
-            <EditInput type="text" onChange={onInputChange} value={todoValue} />
-          </Description>
-        </form>
+        <Description completed={todo.completed}>
+          <pre>{todo.description}</pre>
+          <EditArea
+            onChange={onInputChange}
+            onKeyDown={onSubmit}
+            value={todoValue}
+          />
+        </Description>
       </OutsideClick>
     ) : (
       <>
@@ -114,14 +120,14 @@ const TodoItem = (props: Props) => {
           type="checkbox"
           checked={Boolean(todo.completed)}
         />
+        <CheckBox
+          completed={todo.completed}
+          hide={inEdit || snapshot.isDragging}
+        >
+          <Icon />
+        </CheckBox>
         <Description onDoubleClick={startEdit} completed={todo.completed}>
-          <CheckBox
-            completed={todo.completed}
-            hide={inEdit || snapshot.isDragging}
-          >
-            <Icon />
-          </CheckBox>
-          {todo.description}
+          <pre>{todo.description}</pre>
         </Description>
         <ButtonsWrapper>
           <Button onClick={startEdit}>
