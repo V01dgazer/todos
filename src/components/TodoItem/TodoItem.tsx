@@ -65,6 +65,7 @@ const TodoItem = (props: Props) => {
   const onSubmit = async (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (!e || (e.keyCode === 13 && !e.shiftKey)) {
       const value = todoValue.trim();
+      if (!value.length) return;
       await startEditTodo(todo.id, value);
 
       setTodoValue(value);
