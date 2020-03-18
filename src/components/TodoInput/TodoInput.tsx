@@ -5,7 +5,8 @@ import { addTodo, toggleAllTodos } from "../../actions";
 import { AppState } from "../../store";
 import { Todo as TodoType } from "../../types/types";
 import { TodoActionTypes } from "../../types/action-types";
-import { Input, ToggleAllButton } from "./styles";
+import { InputWrapper, Input, ToggleAllButton, SubmitButton } from "./styles";
+import { ReactComponent as AddIcon } from "./add.svg";
 
 interface Props {
   todos: {
@@ -19,14 +20,9 @@ interface Props {
 const TodoInput: React.FC<Props> = props => {
   const { todos, toggleAll, addTodo, toggleAllTodos } = props;
   const [value, setValue] = React.useState("");
+  const [invalid, setInvalid] = React.useState(false);
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
-  const onInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter" || !value.trim().length) return;
-
+  const submitTodo = () => {
     addTodo({
       id: uuid(),
       description: value.trim(),
@@ -36,13 +32,33 @@ const TodoInput: React.FC<Props> = props => {
     setValue("");
   };
 
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  const onInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter" || !value.trim().length) return;
+    submitTodo();
+  };
+
+  const onButtonSubmit = () => {
+    if (!value.trim().length) {
+      setInvalid(true);
+      setTimeout(() => {
+        setInvalid(false);
+      }, 1000);
+      return;
+    }
+    submitTodo();
+  };
+
   const onToggleClick = () => {
     toggleAllTodos(!toggleAll);
   };
 
   const todosLength = Boolean(Object.keys(todos).length);
   return (
-    <div style={{ position: "relative" }}>
+    <InputWrapper>
       {todosLength && (
         <ToggleAllButton onClick={onToggleClick} toggleAll={toggleAll}>
           ❯
@@ -55,7 +71,10 @@ const TodoInput: React.FC<Props> = props => {
         onKeyDown={onInputSubmit}
         placeholder="What needs to be done?"
       />
-    </div>
+      <SubmitButton onClick={onButtonSubmit} error={invalid}>
+        <AddIcon />
+      </SubmitButton>
+    </InputWrapper>
   );
 };
 

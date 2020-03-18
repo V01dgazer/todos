@@ -71,6 +71,7 @@ export const Item = styled.li`
   position: relative;
   width: 100%;
   padding: 16px 16px 16px 60px;
+  outline: 0;
   :hover ${ButtonsWrapper} {
     display: flex;
     justify-content: space-between;
